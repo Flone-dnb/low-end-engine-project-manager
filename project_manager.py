@@ -85,10 +85,8 @@ def update_engine_for_project(project_path):
     print("Merging changes into the game's master branch...")
     run_command("git checkout master")
     run_command("git merge --squash engine")
-    run_command("git add .")
-    
-    print("Updating submodules...")
     run_command("git submodule update --init --recursive")
+    run_command("git add .")
     
     print("\nEngine branch was updated and merged into your game's master branch, now you need to make sure everything is working and commit the changes.")
 
