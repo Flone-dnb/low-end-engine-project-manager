@@ -21,7 +21,7 @@ void MyGameInstance::onGameStarted() {
     registerGameTypes();
 
     getRenderer()->getFontManager().loadFont(
-        ProjectPaths::getPathToResDirectory(ResourceDirectory::ENGINE) / "font" / "RedHatDisplay-Light.ttf");
+        ProjectPaths::getPathToResDirectory(ResourceDirectory::GAME) / "font" / "font.ttf");
 
     createWorld([]() {
         // TODO

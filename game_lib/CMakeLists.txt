@@ -21,8 +21,8 @@ include(${RELATIVE_CMAKE_HELPERS_PATH}/utils.cmake)
 
 # Specify project sources.
 set(PROJECT_SOURCES
-    public/MyGameInstance.h
-    private/MyGameInstance.cpp
+    src/MyGameInstance.h
+    src/MyGameInstance.cpp
     # add your .h/.cpp files here
 )
 
@@ -46,8 +46,7 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_${PROJECT_CXX_STANDARD_VE
 message(STATUS "${PROJECT_NAME}: using the following C++ standard: ${CMAKE_CXX_STANDARD}")
 
 # Add includes.
-target_include_directories(${PROJECT_NAME} PUBLIC public)
-target_include_directories(${PROJECT_NAME} PUBLIC private)
+target_include_directories(${PROJECT_NAME} PUBLIC src)
 
 # -------------------------------------------------------------------------------------------------
 #                                           TOOLS
@@ -60,7 +59,7 @@ endif()
 
 # node super call checker
 if (NOT DISABLE_DEV_STUFF)
-    add_node_super_call_checker(${CMAKE_CURRENT_LIST_DIR}/public/node ${CMAKE_CURRENT_LIST_DIR}/private/node)
+    add_node_super_call_checker(${CMAKE_CURRENT_LIST_DIR}/src/node ${CMAKE_CURRENT_LIST_DIR}/src/node)
 endif()
 
 # -------------------------------------------------------------------------------------------------
