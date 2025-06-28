@@ -20,7 +20,7 @@ int main() {
 #endif
 
     // Create window.
-    auto result = Window::create("My Game");
+    auto result = WindowBuilder().title("My Game").fullscreen().build();
     if (std::holds_alternative<Error>(result)) [[unlikely]] {
         auto error = std::get<Error>(std::move(result));
         error.addCurrentLocationToErrorStack();
