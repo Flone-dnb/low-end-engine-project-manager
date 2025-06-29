@@ -5,6 +5,8 @@
 #include "render/Renderer.h"
 #include "misc/ProjectPaths.h"
 
+class Node;
+
 MyGameInstance::MyGameInstance(Window* pWindow) : GameInstance(pWindow) {}
 
 void MyGameInstance::registerGameTypes() {
@@ -23,7 +25,7 @@ void MyGameInstance::onGameStarted() {
     getRenderer()->getFontManager().loadFont(
         ProjectPaths::getPathToResDirectory(ResourceDirectory::GAME) / "font" / "font.ttf");
 
-    createWorld([]() {
+    createWorld([](Node* pRootNode) {
         // TODO
     });
 }
