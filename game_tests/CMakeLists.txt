@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-if (NOT GAME_PROJECT_NAME)
+if (NOT DEFINED GAME_PROJECT_NAME)
     message(FATAL_ERROR "Expected game project name to be defined.")
 endif()
 project(${GAME_PROJECT_NAME}_tests)
