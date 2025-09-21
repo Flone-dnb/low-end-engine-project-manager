@@ -24,7 +24,7 @@ void MyGameInstance::onGameStarted() {
   registerGameTypes();
 
   getRenderer()->getFontManager().loadFont(
-      ProjectPaths::getPathToResDirectory(ResourceDirectory::GAME) / "font" /
+      ProjectPaths::getPathToResDirectory(ResourceDirectory::ENGINE) / "font" /
       "font.ttf");
 
   createWorld([](Node *pRootNode) {
