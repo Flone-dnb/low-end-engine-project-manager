@@ -36,7 +36,7 @@ add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER ${PROJECT_FOLDER})
 
 # Enable more warnings and warnings as errors.
-enable_more_warnings()
+enable_more_warnings_for_target(${PROJECT_NAME})
 
 # Set C++ standard.
 set(PROJECT_CXX_STANDARD_VERSION 20)
@@ -62,7 +62,7 @@ create_symlink_to_res()
 
 # Enable Address Sanitizer in `Debug` builds on non-Windows OS.
 if(NOT IS_RELEASE_BUILD AND NOT WIN32)
-    enable_address_sanitizer()
+    enable_address_sanitizer_for_target(${PROJECT_NAME})
 endif()
 
 # -------------------------------------------------------------------------------------------------
@@ -71,13 +71,6 @@ endif()
 
 # Add game library.
 set(GAME_LIB_TARGET ${GAME_PROJECT_NAME}_lib)
-if (NOT TARGET ${GAME_LIB_TARGET}) # define target only if not defined yet
-    message(STATUS "${PROJECT_NAME}: started adding ${GAME_LIB_TARGET}...\n----------------------------------------------\n")
-    add_subdirectory(../${GAME_LIB_TARGET} ${DEPENDENCY_BUILD_DIR_NAME}/${GAME_LIB_TARGET})
-    message(STATUS "\n\n----------------------------------------------\n${PROJECT_NAME}: finished adding ${GAME_LIB_TARGET}")
-else()
-    message(STATUS "${PROJECT_NAME}: ${GAME_LIB_TARGET} already defined, just using it without redefining")
-endif()
 target_link_libraries(${PROJECT_NAME} PUBLIC ${GAME_LIB_TARGET})
 add_dependencies(${PROJECT_NAME} ${GAME_LIB_TARGET})
 
@@ -85,10 +78,10 @@ add_dependencies(${PROJECT_NAME} ${GAME_LIB_TARGET})
 message(STATUS "${PROJECT_NAME}: adding external dependency \"Catch2\"...")
 if (NOT TARGET Catch2) # define target only if not defined yet
     add_subdirectory(${RELATIVE_EXT_PATH}/Catch2 ${DEPENDENCY_BUILD_DIR_NAME}/Catch2 SYSTEM)
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/ext/Catch2/contrib")
+    include(CTest)
+    include(Catch)
 endif()
 set_target_properties(Catch2 PROPERTIES FOLDER ${EXTERNAL_FOLDER})
 set_target_properties(Catch2WithMain PROPERTIES FOLDER ${EXTERNAL_FOLDER})
 target_link_libraries(${PROJECT_NAME} PUBLIC Catch2::Catch2)
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/ext/Catch2/contrib")
-include(CTest)
-include(Catch)

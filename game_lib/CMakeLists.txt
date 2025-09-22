@@ -37,7 +37,7 @@ add_library(${PROJECT_NAME} STATIC ${PROJECT_SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER ${PROJECT_FOLDER})
 
 # Enable more warnings and warnings as errors.
-enable_more_warnings()
+enable_more_warnings_for_target(${PROJECT_NAME})
 
 # Set C++ standard.
 set(PROJECT_CXX_STANDARD_VERSION 20)
@@ -54,12 +54,12 @@ target_include_directories(${PROJECT_NAME} PUBLIC src)
 
 # asan
 if(NOT IS_RELEASE_BUILD AND NOT WIN32 AND NOT DISABLE_DEV_STUFF)
-    enable_address_sanitizer()
+    enable_address_sanitizer_for_target(${PROJECT_NAME})
 endif()
 
 # node super call checker
 if (NOT DISABLE_DEV_STUFF)
-    add_node_super_call_checker(${CMAKE_CURRENT_LIST_DIR}/src/node ${CMAKE_CURRENT_LIST_DIR}/src/node)
+    add_node_super_call_checker_for_target(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/src/node ${CMAKE_CURRENT_LIST_DIR}/src/node)
 endif()
 
 # -------------------------------------------------------------------------------------------------
@@ -68,12 +68,5 @@ endif()
 
 # Add engine library.
 set(ENGINE_LIB_TARGET engine_lib)
-if (NOT TARGET ${ENGINE_LIB_TARGET}) # define target only if not defined yet
-    message(STATUS "${PROJECT_NAME}: started adding ${ENGINE_LIB_TARGET}...\n----------------------------------------------\n")
-    add_subdirectory(../${ENGINE_LIB_TARGET} ${DEPENDENCY_BUILD_DIR_NAME}/${ENGINE_LIB_TARGET})
-    message(STATUS "\n\n----------------------------------------------\n${PROJECT_NAME}: finished adding ${ENGINE_LIB_TARGET}")
-else()
-    message(STATUS "${PROJECT_NAME}: ${ENGINE_LIB_TARGET} already defined, just using it without redefining")
-endif()
 target_link_libraries(${PROJECT_NAME} PUBLIC ${ENGINE_LIB_TARGET})
 add_dependencies(${PROJECT_NAME} ${ENGINE_LIB_TARGET})
