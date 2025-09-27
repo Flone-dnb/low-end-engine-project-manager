@@ -5,8 +5,6 @@
 #include "render/FontManager.h"
 #include "render/Renderer.h"
 
-class Node;
-
 MyGameInstance::MyGameInstance(Window *pWindow) : GameInstance(pWindow) {}
 
 void MyGameInstance::registerGameTypes() {
