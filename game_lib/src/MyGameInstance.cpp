@@ -14,8 +14,7 @@ void MyGameInstance::registerGameTypes() {
     // editor.
     //
     // For example:
-    // ReflectedVariableType::registerType(MyNode::getTypeGuidStatic(),
-    // MyNode::getReflectionInfo());
+    // ReflectedTypeDatabase::registerType(MyNode::getTypeGuidStatic(), MyNode::getReflectionInfo());
 }
 
 void MyGameInstance::onGameStarted() {
