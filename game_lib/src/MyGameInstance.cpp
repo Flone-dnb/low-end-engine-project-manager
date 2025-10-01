@@ -92,11 +92,7 @@ void MyGameInstance::onGameStarted() {
             pBoxShape->setHalfExtent(glm::vec3(0.5F, 0.5F, 0.5F));
             pCubeCollision->setShape(std::move(pBoxShape));
             {
-                pCubeCollision->addChildNode(
-                    std::make_unique<MeshNode>(),
-                    Node::AttachmentRule::KEEP_RELATIVE,
-                    Node::AttachmentRule::KEEP_RELATIVE,
-                    Node::AttachmentRule::KEEP_RELATIVE);
+                pCubeCollision->addChildNode(std::make_unique<MeshNode>());
             }
         }
 
