@@ -23,6 +23,9 @@ include(${RELATIVE_CMAKE_HELPERS_PATH}/utils.cmake)
 set(PROJECT_SOURCES
     src/MyGameInstance.h
     src/MyGameInstance.cpp
+    src/GameInputEventIds.hpp
+    src/node/MyCharacterNode.cpp
+    src/node/MyCharacterNode.h
     # add your .h/.cpp files here
 )
 
