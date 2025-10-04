@@ -10,7 +10,9 @@ struct GameInputEventIds {
 
     /** Groups axis events. */
     enum Axis : unsigned char {
-        MOVE_FORWARD = 0, //< Move forward/back.
-        MOVE_RIGHT,       //< Move right/left.
+        MOVE_FORWARD = 0,   //< Move forward/back.
+        MOVE_RIGHT,         //< Move right/left.
+        GAMEPAD_LOOK_UP,    //< Right gamepad thumbstick Y.
+        GAMEPAD_LOOK_RIGHT, //< Right gamepad thumbstick X.
     };
 };

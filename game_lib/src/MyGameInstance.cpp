@@ -33,15 +33,15 @@ void MyGameInstance::onGameStarted() {
     // Register input events.
     {
         // Jump.
-        auto optionalError =
-            getInputManager()->addActionEvent(GameInputEventIds::Action::JUMP, {KeyboardButton::SPACE});
+        auto optionalError = getInputManager()->addActionEvent(
+            GameInputEventIds::Action::JUMP, {KeyboardButton::SPACE, GamepadButton::B});
         if (optionalError.has_value()) [[unlikely]] {
             Error::showErrorAndThrowException("failed to register input event");
         }
 
         // Crouch.
         optionalError = getInputManager()->addActionEvent(
-            GameInputEventIds::Action::CROUCH, {KeyboardButton::LEFT_CONTROL});
+            GameInputEventIds::Action::CROUCH, {KeyboardButton::LEFT_CONTROL, GamepadButton::A});
         if (optionalError.has_value()) [[unlikely]] {
             Error::showErrorAndThrowException("failed to register input event");
         }
@@ -49,7 +49,7 @@ void MyGameInstance::onGameStarted() {
         // Move forward.
         optionalError = getInputManager()->addAxisEvent(
             GameInputEventIds::Axis::MOVE_FORWARD,
-            {{KeyboardButton::W, KeyboardButton::S}},
+            {{KeyboardButton::S, KeyboardButton::W}},
             {GamepadAxis::LEFT_STICK_Y});
         if (optionalError.has_value()) [[unlikely]] {
             Error::showErrorAndThrowException("failed to register input event");
@@ -60,6 +60,20 @@ void MyGameInstance::onGameStarted() {
             GameInputEventIds::Axis::MOVE_RIGHT,
             {{KeyboardButton::D, KeyboardButton::A}},
             {GamepadAxis::LEFT_STICK_X});
+        if (optionalError.has_value()) [[unlikely]] {
+            Error::showErrorAndThrowException("failed to register input event");
+        }
+
+        // Gamepad look up.
+        optionalError = getInputManager()->addAxisEvent(
+            GameInputEventIds::Axis::GAMEPAD_LOOK_UP, {{}}, {GamepadAxis::RIGHT_STICK_Y});
+        if (optionalError.has_value()) [[unlikely]] {
+            Error::showErrorAndThrowException("failed to register input event");
+        }
+
+        // Gamepad look right.
+        optionalError = getInputManager()->addAxisEvent(
+            GameInputEventIds::Axis::GAMEPAD_LOOK_RIGHT, {{}}, {GamepadAxis::RIGHT_STICK_X});
         if (optionalError.has_value()) [[unlikely]] {
             Error::showErrorAndThrowException("failed to register input event");
         }

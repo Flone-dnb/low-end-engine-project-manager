@@ -79,6 +79,24 @@ protected:
      */
     virtual void onMouseMove(double xOffset, double yOffset) override;
 
+    /**
+     * Called before a new frame is rendered.
+     *
+     * @remark Called before nodes that should be called every frame.
+     *
+     * @param timeSincePrevCallInSec Time in seconds that has passed since the last call
+     * to this function.
+     */
+    virtual void onBeforeNewFrame(float timeSincePrevCallInSec) override;
+
+    /**
+     * Called after a gamepad controller was disconnected.
+     *
+     * @remark This function will not be called if @ref setIsReceivingInput was not enabled.
+     * @remark This function will only be called while this node is spawned.
+     */
+    virtual void onGamepadDisconnected() override;
+
 private:
     /**
      * Returns relative height that @ref pCameraNode should have.
@@ -95,8 +113,14 @@ private:
      */
     void applyLookInput(float xDelta, float yDelta);
 
+    /** Gamepad input for looking right (x) and up (y). */
+    glm::vec2 lastGamepadLookInput = glm::vec2(0.0F, 0.0F);
+
     /** Rotation multiplier for the camera. */
-    float rotationSensitivity = 0.075F;
+    float mouseLookSensitivity = 0.075F;
+
+    /** Constant multiplier for gamepad's rotation input. */
+    float gamepadLookSensitivity = 10.0F;
 
     /** Character speed before crouched. */
     float charSpeedBeforeCrouched = 0.0F;

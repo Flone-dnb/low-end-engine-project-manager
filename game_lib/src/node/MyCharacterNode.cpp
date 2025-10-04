@@ -32,6 +32,7 @@ MyCharacterNode::MyCharacterNode() : MyCharacterNode("My Character Node") {}
 MyCharacterNode::MyCharacterNode(const std::string& sNodeName) : SimpleCharacterBodyNode(sNodeName) {
     setSerialize(false); // you probably don't want to serialize the character node
     setIsReceivingInput(true);
+    setIsCalledEveryFrame(true); // to apply gamepad input
 
     getActionEventBindings()[GameInputEventIds::Action::JUMP] =
         ActionEventCallbacks{.onPressed = [&](KeyboardModifiers modifiers) { jump(false); }};
@@ -56,9 +57,21 @@ MyCharacterNode::MyCharacterNode(const std::string& sNodeName) : SimpleCharacter
         }};
 
     getAxisEventBindings()[GameInputEventIds::Axis::MOVE_FORWARD] =
-        [&](KeyboardModifiers modifiers, float input) { setForwardMovementInput(input); };
+        [&](KeyboardModifiers modifiers, float input) { setForwardMovementInput(-input); };
     getAxisEventBindings()[GameInputEventIds::Axis::MOVE_RIGHT] =
         [&](KeyboardModifiers modifiers, float input) { setRightMovementInput(input); };
+
+    // Gamepad look right.
+    getAxisEventBindings()[static_cast<unsigned int>(GameInputEventIds::Axis::GAMEPAD_LOOK_RIGHT)] =
+        [this](KeyboardModifiers modifiers, float input) {
+            lastGamepadLookInput.x = input * gamepadLookSensitivity;
+        };
+
+    // Gamepad look up.
+    getAxisEventBindings()[static_cast<unsigned int>(GameInputEventIds::Axis::GAMEPAD_LOOK_UP)] =
+        [this](KeyboardModifiers modifiers, float input) {
+            lastGamepadLookInput.y = input * gamepadLookSensitivity;
+        };
 
     pCameraNode = addChildNode(std::make_unique<CameraNode>());
     pCameraNode->setSerialize(false); // don't serialize, same as the parent node
@@ -97,11 +110,25 @@ void MyCharacterNode::onMouseMove(double xOffset, double yOffset) {
 void MyCharacterNode::applyLookInput(float xDelta, float yDelta) {
     // Rotate the character's body around local Z (up).
     auto rotation = getRelativeRotation();
-    rotation.z += xDelta * rotationSensitivity;
+    rotation.z += xDelta * mouseLookSensitivity;
     setRelativeRotation(rotation);
 
     // Rotate the camera around local X (right).
     rotation = pCameraNode->getRelativeRotation();
-    rotation.y += yDelta * rotationSensitivity;
+    rotation.y += yDelta * mouseLookSensitivity;
     pCameraNode->setRelativeRotation(rotation);
+}
+
+void MyCharacterNode::onBeforeNewFrame(float timeSincePrevCallInSec) {
+    SimpleCharacterBodyNode::onBeforeNewFrame(timeSincePrevCallInSec);
+
+    if (!glm::all(glm::epsilonEqual(lastGamepadLookInput, glm::vec2(0.0F, 0.0F), 0.001F))) {
+        applyLookInput(lastGamepadLookInput.x, lastGamepadLookInput.y);
+    }
+}
+
+void MyCharacterNode::onGamepadDisconnected() {
+    SimpleCharacterBodyNode::onGamepadDisconnected();
+
+    lastGamepadLookInput = glm::vec2(0.0F, 0.0F);
 }
