@@ -2,6 +2,7 @@
 
 // Custom.
 #include "game/GameInstance.h"
+#include "math/GLMath.hpp"
 
 class Window;
 
@@ -17,6 +18,13 @@ public:
 
     /** Register custom game types in the reflection database. */
     static void registerGameTypes();
+
+    /**
+     * Returns ambient light that the editor will use.
+     *
+     * @return Ambient light.
+     */
+    static glm::vec3 getAmbientLightForEditor();
 
     virtual ~MyGameInstance() override = default;
 
