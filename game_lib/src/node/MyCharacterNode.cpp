@@ -53,7 +53,7 @@ MyCharacterNode::MyCharacterNode(const std::string& sNodeName) : SimpleCharacter
                 }
             }
             pCameraNode->setRelativeLocation(
-                glm::vec3(0.0F, 0.0F, getCameraRelativeHeight(getBodyShape().getHalfHeight())));
+                glm::vec3(0.0F, getCameraRelativeHeight(getBodyShape().getHalfHeight()), 0.0F));
         }};
 
     getAxisEventBindings()[GameInputEventIds::Axis::MOVE_FORWARD] =
@@ -85,7 +85,7 @@ void MyCharacterNode::onChildNodesSpawned() {
     SimpleCharacterBodyNode::onChildNodesSpawned();
 
     pCameraNode->setRelativeLocation(
-        glm::vec3(0.0F, 0.0F, getCameraRelativeHeight(getBodyShape().getHalfHeight())));
+        glm::vec3(0.0F, getCameraRelativeHeight(getBodyShape().getHalfHeight()), 0.0F));
     pCameraNode->makeActive();
 
     // Capture mouse cursor.
@@ -108,14 +108,14 @@ void MyCharacterNode::onMouseMove(double xOffset, double yOffset) {
 }
 
 void MyCharacterNode::applyLookInput(float xDelta, float yDelta) {
-    // Rotate the character's body around local Z (up).
+    // Rotate the character's body around local Y (up).
     auto rotation = getRelativeRotation();
-    rotation.z += xDelta * mouseLookSensitivity;
+    rotation.y -= xDelta * mouseLookSensitivity;
     setRelativeRotation(rotation);
 
     // Rotate the camera around local X (right).
     rotation = pCameraNode->getRelativeRotation();
-    rotation.y += yDelta * mouseLookSensitivity;
+    rotation.x = std::clamp(rotation.x - yDelta * mouseLookSensitivity, -90.0F, 90.0F);
     pCameraNode->setRelativeRotation(rotation);
 }
 

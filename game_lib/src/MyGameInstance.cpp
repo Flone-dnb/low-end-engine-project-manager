@@ -92,22 +92,22 @@ void MyGameInstance::onGameStarted() {
         const auto pFloorCollision = pRootNode->addChildNode(std::make_unique<CollisionNode>());
         {
             auto pBoxShape = std::make_unique<BoxCollisionShape>();
-            pBoxShape->setHalfExtent(glm::vec3(5.0F, 5.0F, 0.5F));
+            pBoxShape->setHalfExtent(glm::vec3(5.0F, 0.5F, 5.0F));
             pFloorCollision->setShape(std::move(pBoxShape));
             {
                 const auto pMesh = pFloorCollision->addChildNode(std::make_unique<MeshNode>());
-                pMesh->setRelativeScale(glm::vec3(10.0F, 10.0F, 1.0F));
+                pMesh->setRelativeScale(glm::vec3(10.0F, 1.0F, 10.0F));
                 pMesh->getMaterial().setDiffuseColor(glm::vec3(1.0F, 0.5F, 0.0F));
             }
         }
 
         // Create point light.
         const auto pLight = pRootNode->addChildNode(std::make_unique<PointLightNode>());
-        pLight->setRelativeLocation(glm::vec3(0.0F, 0.0F, 5.0F));
+        pLight->setRelativeLocation(glm::vec3(0.0F, 5.0F, 0.0F));
 
         // Create cube.
         const auto pCubeCollision = pRootNode->addChildNode(std::make_unique<CollisionNode>());
-        pCubeCollision->setRelativeLocation(glm::vec3(2.0F, 0.0F, 1.0F));
+        pCubeCollision->setRelativeLocation(glm::vec3(2.0F, 1.0F, 0.0F));
         {
             auto pBoxShape = std::make_unique<BoxCollisionShape>();
             pBoxShape->setHalfExtent(glm::vec3(0.5F, 0.5F, 0.5F));
@@ -119,7 +119,7 @@ void MyGameInstance::onGameStarted() {
 
         // Spawn character.
         auto pCharacter = std::make_unique<MyCharacterNode>();
-        pCharacter->setRelativeLocation(glm::vec3(-2.0F, 0.0F, 1.0F));
+        pCharacter->setRelativeLocation(glm::vec3(-2.0F, 1.0F, 0.0F));
         pRootNode->addChildNode(std::move(pCharacter));
     });
 }
