@@ -107,7 +107,7 @@ void MyGameInstance::onGameStarted() {
 
         // Create cube.
         const auto pCubeCollision = pRootNode->addChildNode(std::make_unique<CollisionNode>());
-        pCubeCollision->setRelativeLocation(glm::vec3(2.0F, 1.0F, 0.0F));
+        pCubeCollision->setRelativeLocation(glm::vec3(0.0F, 1.0F, -2.0F));
         {
             auto pBoxShape = std::make_unique<BoxCollisionShape>();
             pBoxShape->setHalfExtent(glm::vec3(0.5F, 0.5F, 0.5F));
@@ -119,7 +119,7 @@ void MyGameInstance::onGameStarted() {
 
         // Spawn character.
         auto pCharacter = std::make_unique<MyCharacterNode>();
-        pCharacter->setRelativeLocation(glm::vec3(-2.0F, 1.0F, 0.0F));
+        pCharacter->setRelativeLocation(glm::vec3(0.0F, 1.0F, 2.0F));
         pRootNode->addChildNode(std::move(pCharacter));
     });
 }
