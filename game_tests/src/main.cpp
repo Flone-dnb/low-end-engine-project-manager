@@ -7,7 +7,7 @@
 #include <filesystem>
 
 // Custom.
-#include "io/Logger.h"
+#include "io/Log.h"
 #include "misc/ProjectPaths.h"
 
 // External.
@@ -20,8 +20,8 @@ struct EventListener : Catch::EventListenerBase {
     using Catch::EventListenerBase::EventListenerBase;
 
     void testCaseStarting(Catch::TestCaseInfo const& testInfo) override {
-        Logger::get().info(std::format("\n\nstarting test case \"{}\"\n", testInfo.name));
-        Logger::get().flushToDisk();
+        Log::info(std::format("\n\nstarting test case \"{}\"\n", testInfo.name));
+        Log::flushToDisk();
     }
 
     void testCaseEnded(Catch::TestCaseStats const& testCaseStats) override {
@@ -38,9 +38,9 @@ struct EventListener : Catch::EventListenerBase {
             return;
         }
 
-        Logger::get().info("failed tests:");
+        Log::info("failed tests:");
         for (const auto& sName : mtxFailedTestNames.second) {
-            Logger::get().info(std::format("- {}", sName));
+            Log::info(std::format("- {}", sName));
         }
     }
 

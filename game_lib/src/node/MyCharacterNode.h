@@ -99,11 +99,11 @@ protected:
 
 private:
     /**
-     * Returns relative height that @ref pCameraNode should have.
+     * Returns relative location that the camera should take.
      *
-     * @return Height.
+     * @return Relative location.
      */
-    static float getCameraRelativeHeight(float characterCapsuleHalfHeight);
+    glm::vec3 getRelativeLocationForCamera();
 
     /**
      * Applies rotation to the camera.

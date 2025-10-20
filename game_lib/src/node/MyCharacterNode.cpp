@@ -52,8 +52,7 @@ MyCharacterNode::MyCharacterNode(const std::string& sNodeName) : SimpleCharacter
                     setMovementSpeed(charSpeedBeforeCrouched);
                 }
             }
-            pCameraNode->setRelativeLocation(
-                glm::vec3(0.0F, getCameraRelativeHeight(getBodyShape().getHalfHeight()), 0.0F));
+            pCameraNode->setRelativeLocation(getRelativeLocationForCamera());
         }};
 
     getAxisEventBindings()[GameInputEventIds::Axis::MOVE_FORWARD] =
@@ -77,15 +76,15 @@ MyCharacterNode::MyCharacterNode(const std::string& sNodeName) : SimpleCharacter
     pCameraNode->setSerialize(false); // don't serialize, same as the parent node
 }
 
-float MyCharacterNode::getCameraRelativeHeight(float characterCapsuleHalfHeight) {
-    return characterCapsuleHalfHeight * 2.1F;
+glm::vec3 MyCharacterNode::getRelativeLocationForCamera() {
+    constexpr float cameraHeightMult = 2.1F; // <- can be changed if you want
+    return glm::vec3(0.0F, getBodyShape().getHalfHeight() * cameraHeightMult, 0.0F);
 }
 
 void MyCharacterNode::onChildNodesSpawned() {
     SimpleCharacterBodyNode::onChildNodesSpawned();
 
-    pCameraNode->setRelativeLocation(
-        glm::vec3(0.0F, getCameraRelativeHeight(getBodyShape().getHalfHeight()), 0.0F));
+    pCameraNode->setRelativeLocation(getRelativeLocationForCamera());
     pCameraNode->makeActive();
 
     // Capture mouse cursor.
