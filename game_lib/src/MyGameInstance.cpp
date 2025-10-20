@@ -41,14 +41,14 @@ void MyGameInstance::onGameStarted() {
     {
         // Jump.
         auto optionalError = getInputManager()->addActionEvent(
-            GameInputEventIds::Action::JUMP, {KeyboardButton::SPACE, GamepadButton::B});
+            GameInputEventIds::Action::JUMP, {KeyboardButton::SPACE, GamepadButton::BUTTON_RIGHT});
         if (optionalError.has_value()) [[unlikely]] {
             Error::showErrorAndThrowException("failed to register input event");
         }
 
         // Crouch.
         optionalError = getInputManager()->addActionEvent(
-            GameInputEventIds::Action::CROUCH, {KeyboardButton::LEFT_CONTROL, GamepadButton::A});
+            GameInputEventIds::Action::CROUCH, {KeyboardButton::LEFT_CONTROL, GamepadButton::BUTTON_DOWN});
         if (optionalError.has_value()) [[unlikely]] {
             Error::showErrorAndThrowException("failed to register input event");
         }
