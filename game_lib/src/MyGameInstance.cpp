@@ -87,7 +87,7 @@ void MyGameInstance::onGameStarted() {
     }
 
     // Create a simple world.
-    createWorld([this](Node* pRootNode) {
+    createWorld([](Node* pRootNode) {
         // Create floor.
         const auto pFloorCollision = pRootNode->addChildNode(std::make_unique<CollisionNode>());
         {
