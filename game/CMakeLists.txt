@@ -47,7 +47,7 @@ message(STATUS "${PROJECT_NAME}: using the following C++ standard: ${CMAKE_CXX_S
 # Add includes.
 target_include_directories(${PROJECT_NAME} PUBLIC src)
 
-create_symlink_to_res()
+create_symlink_to_res("game")
 
 # -------------------------------------------------------------------------------------------------
 #                                           TOOLS
