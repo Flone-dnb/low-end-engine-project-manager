@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 if (NOT DEFINED GAME_PROJECT_NAME)
     message(FATAL_ERROR "Expected game project name to be defined.")
 endif()
-project(${GAME_PROJECT_NAME})
+project(${GAME_PROJECT_NAME}) # only `game` target has the actual game name to allow renaming the game very easy
 
 # Define some relative paths.
 set(RELATIVE_EXT_PATH "../../ext")
@@ -53,8 +53,8 @@ create_symlink_to_res()
 #                                           TOOLS
 # -------------------------------------------------------------------------------------------------
 
-# Enable Address Sanitizer in `Debug` builds on non-Windows OS.
-if(NOT IS_RELEASE_BUILD AND NOT WIN32 AND NOT DISABLE_DEV_STUFF)
+# ASan.
+if(NOT IS_RELEASE_BUILD AND NOT WIN32)
     enable_address_sanitizer_for_target(${PROJECT_NAME})
 endif()
 
@@ -63,6 +63,6 @@ endif()
 # -------------------------------------------------------------------------------------------------
 
 # Add game library.
-set(GAME_LIB_TARGET ${GAME_PROJECT_NAME}_lib)
+set(GAME_LIB_TARGET game_lib)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${GAME_LIB_TARGET})
 add_dependencies(${PROJECT_NAME} ${GAME_LIB_TARGET})

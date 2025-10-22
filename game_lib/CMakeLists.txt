@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-if (NOT DEFINED GAME_PROJECT_NAME)
-    message(FATAL_ERROR "Expected game project name to be defined.")
-endif()
-project(${GAME_PROJECT_NAME}_lib)
+project(game_lib)
 
 # Define some relative paths.
 set(RELATIVE_EXT_PATH "../../ext")
@@ -51,19 +48,27 @@ message(STATUS "${PROJECT_NAME}: using the following C++ standard: ${CMAKE_CXX_S
 # Add includes.
 target_include_directories(${PROJECT_NAME} PUBLIC src)
 
+# Debug helper: create a file named `debug.cmake` next to this file to disable optimizations.
+if (NOT IS_RELEASE_BUILD AND EXISTS "${CMAKE_CURRENT_LIST_DIR}/debug.cmake")
+    message(STATUS "${PROJECT_NAME}: disabling optimizations because the file \"debug.cmake\" exists.")
+    if (MSVC)
+        target_compile_options(${PROJECT_NAME} PRIVATE -Od)
+    else()
+        target_compile_options(${PROJECT_NAME} PRIVATE -O0)
+    endif()
+endif()
+
 # -------------------------------------------------------------------------------------------------
 #                                           TOOLS
 # -------------------------------------------------------------------------------------------------
 
-# asan
-if(NOT IS_RELEASE_BUILD AND NOT WIN32 AND NOT DISABLE_DEV_STUFF)
+# ASan.
+if(NOT IS_RELEASE_BUILD AND NOT WIN32)
     enable_address_sanitizer_for_target(${PROJECT_NAME})
 endif()
 
 # node super call checker
-if (NOT DISABLE_DEV_STUFF)
-    add_node_super_call_checker_for_target(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/src/node ${CMAKE_CURRENT_LIST_DIR}/src/node)
-endif()
+add_node_super_call_checker_for_target(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/src/node ${CMAKE_CURRENT_LIST_DIR}/src/node)
 
 # -------------------------------------------------------------------------------------------------
 #                                       DEPENDENCIES

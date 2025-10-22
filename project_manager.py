@@ -5,17 +5,20 @@ import subprocess
 import re
 from pathlib import Path
 
-def run_command(command, cwd=None):
+ENGINE_REPO_URL = "https://github.com/Flone-dnb/low-end-engine.git"
+
+def run_command(command, errMsg="", cwd=None):
     try:
         subprocess.run(command, shell=True, check=True, cwd=cwd)
     except subprocess.CalledProcessError as e:
         print(f"Error executing command: {command}")
         print(e)
+        print(errMsg)
         exit(1)
     
 def validate_project_name(name):
-    if not (3 <= len(name) <= 13):
-        print("Error: Project name must be between 3 and 13 characters long")
+    if not (2 <= len(name) <= 13):
+        print("Error: Project name must be 2 - 13 characters long")
         exit(1)
     if not re.match(r'^[A-Za-z0-9_]+$', name):
         print("Error: Project name contains forbidden characters, allowed characters: A-z, 0-9, _")
@@ -26,7 +29,7 @@ def create_new_project(project_name):
     validate_project_name(project_name)
 
     print(f"Cloning low-end-engine repository...")
-    run_command("git clone --depth 1 https://github.com/Flone-dnb/low-end-engine.git")
+    run_command(f"git clone {ENGINE_REPO_URL}")
     
     print(f"Renaming directory to {project_name}...")
     os.rename("low-end-engine", project_name)
@@ -60,9 +63,9 @@ def create_new_project(project_name):
         exit(1)
 
     # Copy game targets.
-    shutil.copytree(game_src, src_dir / project_name, dirs_exist_ok=True)
-    shutil.copytree(game_lib_src, src_dir / f"{project_name}_lib", dirs_exist_ok=True)
-    shutil.copytree(game_tests_src, src_dir / f"{project_name}_tests", dirs_exist_ok=True)
+    shutil.copytree(game_src, src_dir / "game", dirs_exist_ok=True)
+    shutil.copytree(game_lib_src, src_dir / "game_lib", dirs_exist_ok=True)
+    shutil.copytree(game_tests_src, src_dir / "game_tests", dirs_exist_ok=True)
     
     print("Pulling submodules...")
     run_command("git submodule update --init --recursive", cwd=".")
@@ -79,12 +82,14 @@ def update_engine_for_project(project_path):
     os.chdir(project_path)
     
     print("Updating engine branch...")
-    run_command("git checkout engine")
+    run_command("git checkout engine", f"If the `engine` branch does not exist make sure `origin_engine` remote is set to {ENGINE_REPO_URL} and run: `git checkout -b engine origin_engine/master` then re-run this update script while being on the game's `master` branch")
     run_command("git pull --rebase origin_engine master")
     
     print("Merging changes into the game's master branch...")
     run_command("git checkout master")
-    run_command("git merge --squash engine")
+    run_command("git merge engine", "Fix merge conflicts then run `git submodule update --init --recursive` to finish the update.")
+
+    print("Updating submodules...")
     run_command("git submodule update --init --recursive")
     run_command("git add .")
     
