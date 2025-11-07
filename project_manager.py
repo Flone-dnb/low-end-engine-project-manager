@@ -87,7 +87,7 @@ def update_engine_for_project(project_path):
     
     print("Merging changes into the game's master branch...")
     run_command("git checkout master")
-    run_command("git merge engine", "Fix merge conflicts then run `git submodule update --init --recursive` to finish the update.")
+    run_command('git merge engine -m "Merge new engine version."', "Fix merge conflicts then run `git submodule update --init --recursive` to finish the update.")
 
     print("Updating submodules...")
     run_command("git submodule update --init --recursive")
