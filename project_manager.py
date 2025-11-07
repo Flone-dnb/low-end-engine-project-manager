@@ -93,7 +93,7 @@ def update_engine_for_project(project_path):
     run_command("git submodule update --init --recursive")
     run_command("git add .")
     
-    print("\nEngine branch was updated and merged into your game's master branch, now you need to make sure everything is working and commit the changes.")
+    print("\nEngine branch was updated and merged into your game's master branch, now you need to make sure everything is working.")
 
 def main():
     parser = argparse.ArgumentParser(description='Create or update a game project.')
