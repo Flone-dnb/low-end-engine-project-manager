@@ -27,7 +27,7 @@ void MyGameInstance::registerGameTypes() {
 glm::vec3 MyGameInstance::getAmbientLightForEditor() {
     // You can customize this ambient light for the editor.
     // This is ambient light for previewing game worlds, its not the actual ambient light
-    // that your game worlds will have, to set it for your game worlds use post process manager.
+    // that your game worlds will have, to set it for your game worlds use the light source manager.
     return glm::vec3(0.25F, 0.25F, 0.25F);
 }
 
